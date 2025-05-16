@@ -5,8 +5,12 @@ export default function Toolbar(){
 
     const {state, setMode, isFetchingData} = useContext(BookContext)
 
-    const handleClick = () => {
-        setMode(true)
+    const handleAdd = () => {
+        setMode({mode: "add"});
+    }
+
+    const handleDelete = () => {
+
     }
 
     const count = state.count;
@@ -19,7 +23,8 @@ export default function Toolbar(){
         <div>
             {heading}
             <section>
-                <button onClick={handleClick}>ADD BOOK</button>
+                <button onClick={handleAdd}>ADD BOOK</button>
+                <button onClick={handleDelete}>ADD BOOK</button>
             </section>
         </div>
     )

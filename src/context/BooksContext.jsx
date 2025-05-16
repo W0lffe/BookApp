@@ -1,22 +1,22 @@
 import { createContext, useReducer, useState } from "react";
-import { fetchData } from "../http";
+import { fetchData, postData} from "../http";
 
 export const BookContext = createContext({
-    modalOn: false,
+    mode: "",
     books: [],
     count: null,
+    dates: [],
     setMode: () => {},
     isFetchingData: false,
     fetchAndSetBooks: () => {},
-
 })
 
 const bookReducer = (state, action) => {
     console.log(action.type, action.payload)
     switch(action.type){
-        case "SET_MODAL":
+        case "SET_MODE":
             return{
-                ...state, modalOn: action.payload
+                ...state, mode: action.payload
             }
         case "SET_BOOKS": 
             return{
@@ -24,20 +24,21 @@ const bookReducer = (state, action) => {
                     books: action.payload,
                     count: action.payload.length
             }
+        
     }
 }
 
 export default function BookContextProvider({children}){
     const [isFetchingData, setIsFetchingData] = useState(false);
     const [bookState, dispatch] = useReducer(bookReducer, {
-        modalOn: "",
+        mode: "",
         books: [],
-        count: null
+        count: null,
     })
 
     const setMode = (mode) => {
         dispatch({
-            type: "SET_MODAL",
+            type: "SET_MODE",
             payload: mode
         })
     }
@@ -52,7 +53,6 @@ export default function BookContextProvider({children}){
                 type: "SET_BOOKS",
                 payload: books
             })
-
             setIsFetchingData(false)
         }
         fetch();

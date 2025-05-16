@@ -1,11 +1,12 @@
-import { books } from "./dummy";
 
-const URL = "";
+const URL = "https://www.cc.puv.fi/~e2301740/books/bookAPI.php";
+
+
 
 export const fetchData = async() => {
 
-   /*  try {
-        const response = await fetch(`${URL}/booksAPI.php`, {
+    try {
+        const response = await fetch(`${URL}`, {
             method: "GET",
         })
 
@@ -18,7 +19,26 @@ export const fetchData = async() => {
 
     } catch (error) {
         return error;
-    } */
+    } 
 
-    return books;
+}
+
+export const postData = async (data) => {
+
+    try {
+        const response = await fetch(`${URL}`, {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(data)
+        })
+
+        if(!response.ok){
+            throw new Error("Error posting data!")
+        }
+
+    } catch (error) {
+        return error;
+    }
 }
