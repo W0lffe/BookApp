@@ -1,5 +1,6 @@
 import { createContext, useReducer, useRef, useState } from "react";
 import { fetchData, postData} from "../http";
+import { sort } from "../components/Sort/sorting";
 
 export const BookContext = createContext({
     mode: null,
@@ -12,7 +13,8 @@ export const BookContext = createContext({
     modal: undefined,
     addBook: () => {},
     editBook: () => {},
-    deleteBook: () => {}
+    deleteBook: () => {},
+    sortBooks: () => {},
 })
 
 const bookReducer = (state, action) => {
@@ -52,6 +54,8 @@ const bookReducer = (state, action) => {
 export default function BookContextProvider({children}){
     const [isFetchingData, setIsFetchingData] = useState(false);
     const modal = useRef();
+    const fullList = useRef();
+
     const [bookState, dispatch] = useReducer(bookReducer, {
         mode: null,
         books: [],
@@ -96,9 +100,23 @@ export default function BookContextProvider({children}){
                 type: "SET_BOOKS",
                 payload: books
             })
-            setIsFetchingData(false)
+            fullList.current = books;
+            setIsFetchingData(false);
         }
         fetch();
+    }
+
+    const sortBooks = (sortBy) => {
+
+        const sortedBooks = sort({
+            fullList,
+            key: sortBy
+        })
+
+        dispatch({
+            type: "SET_BOOKS",
+            payload: sortedBooks
+        })
     }
 
     const contextValue = {
@@ -109,7 +127,8 @@ export default function BookContextProvider({children}){
         modal,
         addBook,
         editBook,
-        deleteBook 
+        deleteBook,
+        sortBooks
     }
 
     return(

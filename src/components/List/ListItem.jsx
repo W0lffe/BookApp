@@ -1,11 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
+import { faPenToSquare, faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons"
 import { useContext } from "react"
 import { BookContext } from "../../context/BooksContext"
 
 export default function ListItem({item}){
 
-    const {setMode} = useContext(BookContext)
+    const {setMode} = useContext(BookContext);
+
+    const countStars = () => {
+
+        const fullStars = Math.floor(item.stars);
+        const hasHalfStar = item.stars % 1 !== 0;
+
+        let content = [];
+
+        for(let i = 0; i < fullStars; i++){
+            content.push(<FontAwesomeIcon icon={faStar} key={i} />)
+        }
+        
+        if(hasHalfStar){
+            content.push(<FontAwesomeIcon icon={faStarHalf} key={hasHalfStar} />)
+        }
+
+        return content;
+    }
+
+
 
     return(
         <span>
@@ -20,8 +40,8 @@ export default function ListItem({item}){
             <li>
                 <label>{item.title}</label>
                 <label>{item.author}</label>
-                <label>{item.pages ? item.pages : "pagecount"}</label>
-                <label>{item.rating ? item.rating : "stars"}</label>
+                <label>{item.pages}</label>
+                {countStars()}
                 <label>{item.date}</label>
             </li>
         </span>

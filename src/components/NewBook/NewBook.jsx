@@ -40,6 +40,7 @@ export default function NewBook(){
 
     const [sliderValue, setSliderValue] = useState(initialValue);
     const [formState, setFormState] = useState(initialState)
+
     const heading = state.mode.mode === "add" ? "New Book" : "Edit Book"
 
     const newBook = (event) => {
@@ -79,7 +80,6 @@ export default function NewBook(){
             })
 
             setSliderValue(stars)
-            console.log(errors);
             return;
         }
         
@@ -93,12 +93,17 @@ export default function NewBook(){
         }
 
         if(isEditing){
+            setFormState({success: "Book edited!"})
             editBook(book)
         }
         else {
+            setFormState({success: "Book added!"})
             addBook(book);
         }
-        setMode(null);
+
+        setTimeout(() => {
+            setMode(null);
+        }, 1200);
     }
 
     return(
@@ -133,6 +138,11 @@ export default function NewBook(){
                         <label>{`${sliderValue} Stars`}</label>
                     </span>
             </section>
+            {formState.errors && 
+                <ul>
+                    {formState.errors.map((error, i) => <li key={i}>{error}</li>)}
+                </ul>}
+            {formState.success && <label>{formState.success}</label>}
             <button>Submit</button>
         </form>
          </div>
