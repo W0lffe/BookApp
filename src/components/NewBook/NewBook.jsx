@@ -2,13 +2,15 @@ import { useContext, useState } from "react"
 import { BookContext } from "../../context/BooksContext"
 import { validateIsString, validateIsNumber } from "./validate";
 import { getDate } from "../util";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faX } from "@fortawesome/free-solid-svg-icons";
 
 export default function NewBook(){
 
-    const {state, addBook, setMode, editBook} = useContext(BookContext)
+    const {state, addBook, setMode, editBook, deleteBook} = useContext(BookContext)
 
     const bookToEdit = state.mode.book ? state.mode.book : null;
-    const modifiedID = bookToEdit ? bookToEdit.id : 0;
+    const id = bookToEdit ? bookToEdit.id : state.books.length + 1;
     const date = bookToEdit ? bookToEdit.date : getDate();
     const isEditing = state.mode.mode === "edit";
 
@@ -86,12 +88,12 @@ export default function NewBook(){
             author, 
             pages,
             stars,
-            date
+            date,
+            id
         }
 
         if(isEditing){
-            const editedBook = {...book, id: modifiedID};
-            editBook(editedBook)
+            editBook(book)
         }
         else {
             addBook(book);
@@ -102,17 +104,32 @@ export default function NewBook(){
     return(
         <div>
         <form onSubmit={newBook}>
+            {isEditing ? <FontAwesomeIcon icon={faTrash}  onClick={() => {deleteBook(id), setMode(null)}}/>  : null}
+            <FontAwesomeIcon icon={faX} onClick={() => setMode(null)}/>
             <h2>{heading}</h2>
             <section>
                 <label>Title</label>
-                <input type="text" placeholder="Book Title" name="title" defaultValue={formState.validInputs?.title}/>
+                <input type="text" 
+                        placeholder="Book Title" 
+                        name="title" 
+                        defaultValue={formState.validInputs?.title}/>
                 <label>Author</label>
-                <input type="text" placeholder="Book Author" name="author" defaultValue={formState.validInputs?.author}/>
+                <input type="text" 
+                        placeholder="Book Author" 
+                        name="author" 
+                        defaultValue={formState.validInputs?.author}/>
                 <label>Pages</label>
-                <input type="number" placeholder="Pagecount" name="pages" defaultValue={formState.validInputs?.pages}/>
+                <input type="number" 
+                        placeholder="Pagecount" 
+                        name="pages" 
+                        defaultValue={formState.validInputs?.pages}/>
                 <label>Rating</label>
                     <span>
-                        <input type="range" name="stars" min="1" max="5" step="0.5" defaultValue={sliderValue} onChange={(event) => setSliderValue(event.target.value)}/>
+                        <input type="range" 
+                                name="stars" 
+                                min="1" max="5" step="0.5" 
+                                defaultValue={sliderValue} 
+                                onChange={(event) => setSliderValue(event.target.value)}/>
                         <label>{`${sliderValue} Stars`}</label>
                     </span>
             </section>

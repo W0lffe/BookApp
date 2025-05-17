@@ -1,8 +1,6 @@
 import { createPortal } from "react-dom";
 import { useContext, useEffect } from "react";
 import { BookContext } from "../../context/BooksContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
 import NewBook from "../NewBook/NewBook";
 
 export default function Modal(){
@@ -25,7 +23,6 @@ export default function Modal(){
 
     return createPortal(
         <dialog ref={modal}>
-            <FontAwesomeIcon icon={faX} onClick={() => setMode(null)}/>
             {isActive ? <NewBook /> : null}
         </dialog>, document.getElementById("modal")
     )

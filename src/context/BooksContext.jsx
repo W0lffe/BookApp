@@ -11,7 +11,8 @@ export const BookContext = createContext({
     fetchAndSetBooks: () => {},
     modal: undefined,
     addBook: () => {},
-    editBook: () => {}
+    editBook: () => {},
+    deleteBook: () => {}
 })
 
 const bookReducer = (state, action) => {
@@ -37,6 +38,11 @@ const bookReducer = (state, action) => {
             updatedBooks = [...state.books].map((book) => 
                     book.id === action.payload.id ? action.payload : book)
             return {
+                ...state, books: updatedBooks
+            }
+        case "DELETE_BOOK": 
+            updatedBooks = [...state.books].filter((book) => book.id !== action.payload);
+            return{
                 ...state, books: updatedBooks
             }
         
@@ -72,6 +78,13 @@ export default function BookContextProvider({children}){
             payload: editedBook
         })
     }
+
+    const deleteBook = (id) => {
+        dispatch({
+            type: "DELETE_BOOK",
+            payload: id
+        })
+    }
     
     const fetchAndSetBooks = async() => {
         setIsFetchingData(true);
@@ -95,7 +108,8 @@ export default function BookContextProvider({children}){
         fetchAndSetBooks,
         modal,
         addBook,
-        editBook 
+        editBook,
+        deleteBook 
     }
 
     return(
