@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer, useRef, useState } from "react";
 import { fetchData, postData} from "../http";
 
 export const BookContext = createContext({
@@ -9,6 +9,7 @@ export const BookContext = createContext({
     setMode: () => {},
     isFetchingData: false,
     fetchAndSetBooks: () => {},
+    modal: undefined,
 })
 
 const bookReducer = (state, action) => {
@@ -30,6 +31,7 @@ const bookReducer = (state, action) => {
 
 export default function BookContextProvider({children}){
     const [isFetchingData, setIsFetchingData] = useState(false);
+    const modal = useRef();
     const [bookState, dispatch] = useReducer(bookReducer, {
         mode: "",
         books: [],
@@ -62,7 +64,8 @@ export default function BookContextProvider({children}){
         state: bookState,
         setMode,
         isFetchingData,
-        fetchAndSetBooks
+        fetchAndSetBooks,
+        modal,
     }
 
     return(

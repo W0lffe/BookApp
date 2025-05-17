@@ -1,6 +1,5 @@
-import { } from 'react'
 import Header from './components/Header/Header'
-import Toolbar from './components/Toolbar/Toolbar'
+import Modal from './components/Modal/Modal'
 import BookContextProvider from './context/BooksContext'
 import Container from './components/Container/Container'
 
@@ -10,6 +9,7 @@ export default function App() {
     <BookContextProvider>
     <div>
       <Header />
+      <Modal />
       <Container />
     </div>
     </BookContextProvider>

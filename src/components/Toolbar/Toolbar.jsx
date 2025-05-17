@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { BookContext } from "../../context/BooksContext";
+import Sort from "../Sort/Sort";
 
 export default function Toolbar(){
 
@@ -21,7 +22,7 @@ export default function Toolbar(){
             <section>
                 <button onClick={handleAdd}>ADD BOOK</button>
             </section>
-            <p>SORTING</p>
+            <Sort />
         </div>
     )
 }
