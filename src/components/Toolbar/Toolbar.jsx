@@ -9,10 +9,6 @@ export default function Toolbar(){
         setMode({mode: "add"});
     }
 
-    const handleDelete = () => {
-
-    }
-
     const count = state.count;
     const books = count > 1 ? "books" : "book" ; 
 
@@ -24,8 +20,8 @@ export default function Toolbar(){
             {heading}
             <section>
                 <button onClick={handleAdd}>ADD BOOK</button>
-                <button onClick={handleDelete}>ADD BOOK</button>
             </section>
+            <p>SORTING</p>
         </div>
     )
 }

@@ -10,7 +10,6 @@ export default function App() {
     <BookContextProvider>
     <div>
       <Header />
-      <Toolbar />
       <Container />
     </div>
     </BookContextProvider>
