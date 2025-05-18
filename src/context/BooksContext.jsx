@@ -1,13 +1,14 @@
 import { createContext, useReducer, useRef, useState } from "react";
 import { fetchData, postData} from "../http";
 import { sort, filter} from "../components/Sort/sorting";
-import { getPageCount } from "../components/util";
+import { getPageCount, getTitle } from "../components/util";
 
 export const BookContext = createContext({
     mode: null,
     books: [],
     count: null,
     dates: [],
+    title: "",
     setMode: () => {},
     isFetchingData: false,
     fetchAndSetBooks: () => {},
@@ -33,11 +34,13 @@ const bookReducer = (state, action) => {
                 }
             }
 
+        const pages = getPageCount(action.payload);
             return{
                 ...state, 
                     books: action.payload,
                     count: action.payload.length,
-                    pageCount: getPageCount(action.payload),
+                    pageCount: pages,
+                    title: getTitle(pages),
                     isInitialized: true
             }
     }
@@ -54,6 +57,7 @@ export default function BookContextProvider({children}){
         count: null,
         pageCount: null,
         isInitialized: false,
+        title: ""
     })
 
     const setMode = (mode) => {

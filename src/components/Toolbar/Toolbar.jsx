@@ -20,10 +20,13 @@ export default function Toolbar(){
     const pageCount = !isFetchingData ? <p>{`This totals in ${pages} pages.`}</p> :
                                         <h3>Retrieving data...</h3>
 
+    const title = !isFetchingData ? <p>{`Your title is ${state.title}`}</p> :
+                                        null
     return(
         <div>
             {bookCount}
             {pageCount}
+            {title}
             <section>
                 <button onClick={handleAdd}>ADD BOOK</button>
             </section>
