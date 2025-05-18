@@ -84,8 +84,8 @@ export default function NewBook(){
         }
         
         const book = {
-            title,
-            author, 
+            author,
+            title, 
             pages,
             stars,
             date,

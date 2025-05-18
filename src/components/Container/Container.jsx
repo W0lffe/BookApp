@@ -4,7 +4,7 @@ import Modal from "../Modal/Modal"
 
 export default function Container(){
     return(
-        <div>
+        <div className="app-container">
             <Modal />
             <Toolbar />
             <List />

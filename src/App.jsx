@@ -6,7 +6,7 @@ export default function App() {
 
   return (
     <BookContextProvider>
-    <div>
+    <div className='container'>
       <Header />
       <Container />
     </div>

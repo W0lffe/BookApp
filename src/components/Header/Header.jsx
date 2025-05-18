@@ -11,7 +11,7 @@ export default function Header(){
 
 
     return(
-        <header>
+        <header id="header">
             <h2>My Virtual Bookshelf</h2>
         </header>
     )
