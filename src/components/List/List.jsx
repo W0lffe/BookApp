@@ -8,7 +8,6 @@ export default function List(){
     const [list, setList] = useState([]);
 
     useEffect(()=>{
-        console.log(state.books)
         setList(state.books)
     },[state.books]) 
 

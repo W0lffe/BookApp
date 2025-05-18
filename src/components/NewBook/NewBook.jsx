@@ -7,7 +7,7 @@ import { faTrash, faX } from "@fortawesome/free-solid-svg-icons";
 
 export default function NewBook(){
 
-    const {state, addBook, setMode, editBook, deleteBook} = useContext(BookContext)
+    const {state, setMode, updateBookState} = useContext(BookContext)
 
     const bookToEdit = state.mode.book ? state.mode.book : null;
     const id = bookToEdit ? bookToEdit.id : state.books.length + 1;
@@ -94,11 +94,11 @@ export default function NewBook(){
 
         if(isEditing){
             setFormState({success: "Book edited!"})
-            editBook(book)
+            updateBookState(book, "edit" )
         }
         else {
             setFormState({success: "Book added!"})
-            addBook(book);
+            updateBookState(book, "add")
         }
 
         setTimeout(() => {
@@ -109,7 +109,7 @@ export default function NewBook(){
     return(
         <div>
         <form onSubmit={newBook}>
-            {isEditing ? <FontAwesomeIcon icon={faTrash}  onClick={() => {deleteBook(id), setMode(null)}}/>  : null}
+            {isEditing ? <FontAwesomeIcon icon={faTrash}  onClick={() => {updateBookState(id, "del"), setMode(null)}}/>  : null}
             <FontAwesomeIcon icon={faX} onClick={() => setMode(null)}/>
             <h2>{heading}</h2>
             <section>

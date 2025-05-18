@@ -1,6 +1,7 @@
 import { createContext, useReducer, useRef, useState } from "react";
 import { fetchData, postData} from "../http";
-import { sort } from "../components/Sort/sorting";
+import { sort, filter} from "../components/Sort/sorting";
+import { getPageCount } from "../components/util";
 
 export const BookContext = createContext({
     mode: null,
@@ -11,43 +12,34 @@ export const BookContext = createContext({
     isFetchingData: false,
     fetchAndSetBooks: () => {},
     modal: undefined,
-    addBook: () => {},
-    editBook: () => {},
-    deleteBook: () => {},
     sortBooks: () => {},
+    filterBooks: () => {},
+    pageCount: null,
+    isInitialized: false,
+    updateBookState: () => {},
 })
 
 const bookReducer = (state, action) => {
     console.log(action.type, action.payload)
-    let updatedBooks;
     switch(action.type){
         case "SET_MODE":
             return{
                 ...state, mode: action.payload
             }
         case "SET_BOOKS": 
+            if(state.isInitialized){
+                return{
+                    ...state, books: action.payload
+                }
+            }
+
             return{
                 ...state, 
                     books: action.payload,
-                    count: action.payload.length
+                    count: action.payload.length,
+                    pageCount: getPageCount(action.payload),
+                    isInitialized: true
             }
-        case "ADD_BOOK":
-            updatedBooks = [...state.books, action.payload]
-            return{
-                ...state, books: updatedBooks
-            }
-        case "MODIFY_BOOK":
-            updatedBooks = [...state.books].map((book) => 
-                    book.id === action.payload.id ? action.payload : book)
-            return {
-                ...state, books: updatedBooks
-            }
-        case "DELETE_BOOK": 
-            updatedBooks = [...state.books].filter((book) => book.id !== action.payload);
-            return{
-                ...state, books: updatedBooks
-            }
-        
     }
 }
 
@@ -60,6 +52,8 @@ export default function BookContextProvider({children}){
         mode: null,
         books: [],
         count: null,
+        pageCount: null,
+        isInitialized: false,
     })
 
     const setMode = (mode) => {
@@ -69,25 +63,30 @@ export default function BookContextProvider({children}){
         })
     }
 
-    const addBook = (newBook) => {
-        dispatch({
-            type: "ADD_BOOK",
-            payload: newBook
-        })
-    }
-    
-    const editBook = (editedBook) => {
-        dispatch({
-            type: "MODIFY_BOOK",
-            payload: editedBook
-        })
+    const updateBookState = async (update, use) => {
+
+        let updatedBooks = [];
+        switch(use){
+            case "edit": 
+            updatedBooks = [...bookState.books].map((book) => 
+                            book.id === update.id ? update : book);
+            break;
+            case "add": 
+            updatedBooks = [...bookState.books, update];
+            break;
+            case "del":
+            updatedBooks = [...bookState.books].filter((book) => book.id !== update);
+            break;
+        }
+        bookState.isInitialized = false;
+
+        await postAndFetch(updatedBooks);
     }
 
-    const deleteBook = (id) => {
-        dispatch({
-            type: "DELETE_BOOK",
-            payload: id
-        })
+    const postAndFetch = async(data) => {
+
+        await postData(data)
+        await fetchAndSetBooks();
     }
     
     const fetchAndSetBooks = async() => {
@@ -109,7 +108,7 @@ export default function BookContextProvider({children}){
     const sortBooks = (sortBy) => {
 
         const sortedBooks = sort({
-            fullList,
+            fullList: bookState.books,
             key: sortBy
         })
 
@@ -119,16 +118,34 @@ export default function BookContextProvider({children}){
         })
     }
 
+    const filterBooks = (value) => {
+        let filteredBooks;
+
+        if(value.length === 0){
+            filteredBooks = fullList.current;
+        }
+        else{
+            filteredBooks = filter({
+                fullList: bookState.books,
+                key: value
+            })
+        }
+
+        dispatch({
+            type: "SET_BOOKS",
+            payload: filteredBooks
+        })
+    }
+
     const contextValue = {
         state: bookState,
         setMode,
         isFetchingData,
         fetchAndSetBooks,
         modal,
-        addBook,
-        editBook,
-        deleteBook,
-        sortBooks
+        sortBooks,
+        filterBooks,
+        updateBookState
     }
 
     return(

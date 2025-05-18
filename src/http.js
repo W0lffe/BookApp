@@ -23,6 +23,8 @@ export const fetchData = async() => {
 
 export const postData = async (data) => {
 
+    console.log(data)
+
     try {
         const response = await fetch(`${URL}`, {
             method: "POST",
@@ -35,6 +37,8 @@ export const postData = async (data) => {
         if(!response.ok){
             throw new Error("Error posting data!")
         }
+
+        console.log(response)
 
     } catch (error) {
         return error;
