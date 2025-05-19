@@ -11,7 +11,7 @@ export default function List(){
         setList(state.books)
     },[state.books]) 
 
-    let listContent = <h3>Shelf is empty, add books first</h3>;
+    let listContent = <h3>No books found.</h3>;
 
     if(list.length > 0){
         listContent = list.map((item, i) => <ListItem key={i} item={item}/>)

@@ -34,13 +34,13 @@ const bookReducer = (state, action) => {
                 }
             }
 
-        const pages = getPageCount(action.payload);
+        const count = action.payload.length;
             return{
                 ...state, 
                     books: action.payload,
-                    count: action.payload.length,
-                    pageCount: pages,
-                    title: getTitle(pages),
+                    count,
+                    pageCount: getPageCount(action.payload),
+                    title: getTitle(count),
                     isInitialized: true
             }
     }
@@ -79,7 +79,7 @@ export default function BookContextProvider({children}){
             updatedBooks = [...bookState.books, update];
             break;
             case "del":
-            updatedBooks = [...bookState.books].filter((book) => book.id !== update);
+            updatedBooks = [...fullList.current].filter((book) => book.id !== update);
             break;
         }
         bookState.isInitialized = false;

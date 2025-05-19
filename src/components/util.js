@@ -17,8 +17,6 @@ export const getPageCount = (list) => {
 
 export const getTitle = (count) => {
 
-    console.log(count)
-    
     const titles = [
         { minBooks: 0, maxBooks: 0, name: "Unread Scrolls Enthusiast" },
         { minBooks: 1, maxBooks: 3, name: "Page Turner Trainee" },
