@@ -1,5 +1,5 @@
 
-const URL = "https://www.cc.puv.fi/~e2301740/books/bookAPI.php";
+const URL = "";
 
 export const fetchData = async() => {
 
