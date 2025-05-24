@@ -6,7 +6,7 @@ export default function App() {
 
   return (
     <BookContextProvider>
-    <div className='container'>
+    <div className='flex flex-col w-full h-full items-center'>
       <Header />
       <Container />
     </div>

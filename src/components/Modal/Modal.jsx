@@ -22,7 +22,7 @@ export default function Modal(){
     }, [state.mode])
 
     return createPortal(
-        <dialog ref={modal}>
+        <dialog ref={modal} className="backdrop:bg-gray-900/80">
             {isActive ? <NewBook /> : null}
         </dialog>, document.getElementById("modal")
     )

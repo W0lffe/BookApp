@@ -11,8 +11,8 @@ export default function Header(){
 
 
     return(
-        <header id="header">
-            <h2>My Virtual Bookshelf</h2>
+        <header className="flex flex-row w-full p-1 px-5 lg:p-5 bg-gradient-to-tr from-gray-700/50 to-gray-500/80  rounded-b-2xl">
+            <h2 className="text-2xl lg:text-3xl italic font-medium">My Virtual Bookshelf</h2>
         </header>
     )
 }

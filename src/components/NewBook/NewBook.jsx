@@ -7,19 +7,19 @@ import { faTrash, faX } from "@fortawesome/free-solid-svg-icons";
 
 export default function NewBook(){
 
-    const {state, setMode, updateBookState} = useContext(BookContext)
+    const {state, setMode, updateBookState, fullList} = useContext(BookContext)
 
     const bookToEdit = state.mode.book ? state.mode.book : null;
-    const id = bookToEdit ? bookToEdit.id : state.books.length + 1;
+    const id = bookToEdit ? bookToEdit.id : fullList.length + 1;
     const date = bookToEdit ? bookToEdit.date : getDate();
     const isEditing = state.mode.mode === "edit";
 
     let initialState = {
         errors: null,
          validInputs: {
-            title: "",
-            author: "",
-            pages: 0,
+            title: null,
+            author: null,
+            pages: NaN,
     }}
     let initialValue = 1;
 
@@ -106,30 +106,46 @@ export default function NewBook(){
         }, 1200);
     }
 
+    const labelStyle = "italic font-semibold";
+    const inputStyle = "border border-black/80 p-2 rounded-bl-[12px] rounded-tr-[12px]";
+
+    const handleDelete = () => {
+        updateBookState(id, "del");
+        setTimeout(() => {
+            setMode(null)
+        }, 1000);
+    }
+
     return(
-        <div>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+        bg-white p-1 w-5/6 lg:w-2/8 rounded-bl-[12px] rounded-tr-[12px]">
         <form onSubmit={newBook}>
-            {isEditing ? <FontAwesomeIcon icon={faTrash}  onClick={() => {updateBookState(id, "del"), setMode(null)}}/>  : null}
-            <FontAwesomeIcon icon={faX} onClick={() => setMode(null)}/>
-            <h2>{heading}</h2>
-            <section>
-                <label>Title</label>
+            <header className="flex flex-row gap-5 p-4">
+                <FontAwesomeIcon icon={faX} onClick={() => setMode(null)}/>
+                {isEditing ? <FontAwesomeIcon icon={faTrash}  onClick={handleDelete} className="text-red-500"/>  : null}
+            </header>
+            <h2 className="text-[18px] font-medium px-5">{heading}</h2>
+            <section className="flex flex-col justify-center px-10">
+                <label className={labelStyle}>Title</label>
                 <input type="text" 
                         placeholder="Book Title" 
                         name="title" 
-                        defaultValue={formState.validInputs?.title}/>
-                <label>Author</label>
+                        defaultValue={formState.validInputs?.title}
+                        className={inputStyle}/>
+                <label className={labelStyle}>Author</label>
                 <input type="text" 
                         placeholder="Book Author" 
                         name="author" 
-                        defaultValue={formState.validInputs?.author}/>
-                <label>Pages</label>
+                        defaultValue={formState.validInputs?.author}
+                        className={inputStyle}/>
+                <label className={labelStyle}>Pages</label>
                 <input type="number" 
                         placeholder="Pagecount" 
                         name="pages" 
-                        defaultValue={formState.validInputs?.pages}/>
-                <label>Rating</label>
-                    <span>
+                        defaultValue={formState.validInputs?.pages}
+                        className={inputStyle}/>
+                <label className={labelStyle}>Rating</label>
+                    <span className="flex flex-row gap-5">
                         <input type="range" 
                                 name="stars" 
                                 min="1" max="5" step="0.5" 
@@ -138,12 +154,13 @@ export default function NewBook(){
                         <label>{`${sliderValue} Stars`}</label>
                     </span>
             </section>
-            {formState.errors && 
-                <ul>
-                    {formState.errors.map((error, i) => <li key={i}>{error}</li>)}
-                </ul>}
-            {formState.success && <label>{formState.success}</label>}
-            <button>Submit</button>
+            <section className="flex flex-col w-full items-center justify-center list-disc animate-pulse">
+                {formState.errors?.length > 0 ? formState.errors.map((error, i) => <li key={i}>{error}</li>) : null}
+                {formState.success && <label>{formState.success}</label>}
+            </section>
+            <footer className="flex w-full mt-5 justify-center items-center">
+                <button className="border border-black bg-gray-800/70 text-white w-40 p-1 rounded-bl-[12px] rounded-tr-[12px] italic font-medium">Submit</button>
+            </footer>
         </form>
          </div>
     )

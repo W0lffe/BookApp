@@ -18,9 +18,9 @@ export const sort = (params) => {
                 valueA = a.author;
                 valueB = b.author;
                 return valueA.localeCompare(valueB);
-            case "pages":
-                valueA = a.pages;
-                valueB = b.pages;
+            case "date":
+                valueA = new Date (a.date);
+                valueB = new Date (b.date);
                 return valueB - valueA;
             case "stars":
                 valueA = a.stars;

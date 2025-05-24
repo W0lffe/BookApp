@@ -4,7 +4,7 @@ import Modal from "../Modal/Modal"
 
 export default function Container(){
     return(
-        <div className="app-container">
+        <div className="flex flex-col w-full lg:w-fit h-fit items-center justify-center">
             <Modal />
             <Toolbar />
             <List />

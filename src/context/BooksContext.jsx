@@ -18,6 +18,7 @@ export const BookContext = createContext({
     pageCount: null,
     isInitialized: false,
     updateBookState: () => {},
+    fullList: [],
 })
 
 const bookReducer = (state, action) => {
@@ -72,11 +73,11 @@ export default function BookContextProvider({children}){
         let updatedBooks = [];
         switch(use){
             case "edit": 
-            updatedBooks = [...bookState.books].map((book) => 
+            updatedBooks = [...fullList.current].map((book) => 
                             book.id === update.id ? update : book);
             break;
             case "add": 
-            updatedBooks = [...bookState.books, update];
+            updatedBooks = [...fullList.current, update];
             break;
             case "del":
             updatedBooks = [...fullList.current].filter((book) => book.id !== update);
@@ -149,7 +150,8 @@ export default function BookContextProvider({children}){
         modal,
         sortBooks,
         filterBooks,
-        updateBookState
+        updateBookState,
+        fullList: fullList.current
     }
 
     return(
