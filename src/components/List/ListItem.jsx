@@ -6,6 +6,7 @@ import { BookContext } from "../../context/BooksContext"
 export default function ListItem({item, number}){
 
     const {setMode} = useContext(BookContext);
+    const [isTouched, setIsTouched] = useState(false);
 
     const countStars = () => {
 
@@ -26,7 +27,11 @@ export default function ListItem({item, number}){
     }
 
     return(
-        <span className="flex flex-row w-[90%] h-fit gap-5 border mt-2 rounded-bl-[16px] rounded-tr-[16px]">
+        <span className={`flex flex-row w-[90%] h-fit gap-5 border mt-2 rounded-bl-[16px] 
+                        rounded-tr-[16px] hover:p-2 hover:bg-gray-800/80 transition-all
+                        ${isTouched ? "p-2 bg-gray-800/80" : ""}`}
+                        onTouchStart={() => setIsTouched(true)}
+                        onTouchEnd={() => setIsTouched(false)}>
             <li className="flex flex-col p-3 gap-1">
                 <FontAwesomeIcon icon={faPenToSquare} 
                                 onClick={() => setMode({book: item, mode: "edit"})} 

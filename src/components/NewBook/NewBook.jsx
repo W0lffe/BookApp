@@ -107,7 +107,7 @@ export default function NewBook(){
     }
 
     const labelStyle = "italic font-semibold";
-    const inputStyle = "border border-black/80 p-2 rounded-bl-[12px] rounded-tr-[12px]";
+    const inputStyle = "border border-black/80 p-2 rounded-bl-[12px] rounded-tr-[12px] focus:bg-gray-700/60 focus:text-white focus:p-3 transition-all";
 
     const handleDelete = () => {
         updateBookState(id, "del");
