@@ -14,7 +14,7 @@ export default function Sort(){
             <input type="text" 
             placeholder="Search by title or author" 
             onChange={(e) => {filterBooks(e.target.value)}} 
-            className="border border-gray-800/60 w-60 p-2 rounded-tr-[12px]"/>
+            className="border border-gray-800/60 w-60 p-2 rounded-tr-[12px] hover:bg-gray-400/50 hover:animate-pulse hover:p-3 transition-all"/>
             <section className="flex flex-row w-full gap-10 justify-center">
                 <FontAwesomeIcon icon={faBook} 
                                  onClick={() => {sortBooks("title")}} 

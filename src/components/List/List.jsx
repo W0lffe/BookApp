@@ -18,7 +18,7 @@ export default function List(){
     }
     
     return(
-        <ul className="flex flex-col w-9/10 max-h-120 overflow-y-auto border items-center
+        <ul className="flex flex-col w-9/10 max-h-100 lg:max-h-150 overflow-y-auto border items-center
                     border-black/50 p-1 mt-5 lg:m-5 bg-gradient-to-tr from-gray-700/50 to-gray-600/80 rounded-[10px] ">
             {listContent}
         </ul>
