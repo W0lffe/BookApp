@@ -1,7 +1,12 @@
 
 import { URL } from "./api";
 
+
 export const fetchData = async() => {
+
+   /*  const response = await fetch("../books.json")
+    const data = await response.json();
+    return {success: true, books: data} */
 
     try {
         const response = await fetch(`${URL}`, {

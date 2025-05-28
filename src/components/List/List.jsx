@@ -16,12 +16,12 @@ export default function List(){
     if(list.length > 0){
         listContent = list.map((item, i) => <ListItem key={i} item={item} number={i+1}/>)
     }
-    
+
     return(
-        <ul className="flex flex-col w-9/10 max-h-100 lg:max-h-150 overflow-y-auto border items-center
-                    border-black/50 p-1 mt-5 lg:m-5 bg-gradient-to-tr from-gray-800/60 to-gray-600/80 rounded-[10px] ">
+        <div className="flex flex-col w-9/10 max-h-[500px] overflow-y-auto border items-center
+                         border-black/50 p-1 mt-5 lg:m-5 bg-gradient-to-tr from-gray-800/60 to-gray-600/80 rounded-[10px] ">
             {listContent}
-        </ul>
+        </div>
     )
 }
 

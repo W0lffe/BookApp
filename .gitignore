@@ -13,6 +13,8 @@ dist-ssr
 *.local
 assets/
 
+#old
+src/components/List/Old_ListItem.jsx
 
 # Editor directories and files
 .vscode/*
