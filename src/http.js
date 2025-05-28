@@ -1,5 +1,5 @@
 
-const URL = "";
+import { URL } from "./api";
 
 export const fetchData = async() => {
 

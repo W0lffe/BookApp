@@ -26,3 +26,5 @@ assets/
 *.sw?
 .firebaserc
 .firebase/*
+api.js
+firebase.json
