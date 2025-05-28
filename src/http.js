@@ -13,10 +13,11 @@ export const fetchData = async() => {
         }
 
         const data = await response.json();
-        return data;
+        return {success: true, books: data};
 
     } catch (error) {
-        return error;
+        console.log(error.message)
+        return {success: false, error: error.message, books: []};
     } 
 
 }
@@ -39,8 +40,10 @@ export const postData = async (data) => {
         }
 
         console.log(response)
+        return {success: true, response}
 
     } catch (error) {
-        return error;
+        console.log(error.message)
+        return {success: false, error: error.message};
     }
 }

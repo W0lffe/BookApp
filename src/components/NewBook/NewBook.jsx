@@ -4,6 +4,7 @@ import { validateIsString, validateIsNumber } from "./validate";
 import { getDate } from "../util";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 export default function NewBook(){
 
@@ -43,7 +44,7 @@ export default function NewBook(){
 
     const heading = state.mode.mode === "add" ? "New Book" : "Edit Book"
 
-    const newBook = (event) => {
+    const newBook = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target)
         const title = formData.get("title")
@@ -80,6 +81,13 @@ export default function NewBook(){
             })
 
             setSliderValue(stars)
+
+            toast((t) => (
+                <section className="flex flex-col w-full items-center justify-center list-disc animate-pulse">
+                    {errors?.length > 0 ? errors.map((error, i) => <li key={i}>{error}</li>) : null}
+                </section>
+            ))
+
             return;
         }
         
@@ -92,33 +100,32 @@ export default function NewBook(){
             id
         }
 
-        if(isEditing){
-            setFormState({success: "Book edited!"})
-            updateBookState(book, "edit" )
-        }
-        else {
-            setFormState({success: "Book added!"})
-            updateBookState(book, "add")
-        }
+        const successMessage = isEditing ? "Book edited!" : "Book added!";
+        const response = await updateBookState(book, isEditing ? "edit" : "add");
+        
+        response.success ?  toast.success(successMessage) : toast.error("Something went wrong...");
 
         setTimeout(() => {
             setMode(null);
         }, 1200);
     }
 
-    const labelStyle = "italic font-semibold";
-    const inputStyle = "border border-black/80 p-2 rounded-bl-[12px] rounded-tr-[12px] focus:bg-gray-700/60 focus:text-white focus:p-3 transition-all";
-
-    const handleDelete = () => {
-        updateBookState(id, "del");
+    const handleDelete = async () => {
+        const response = await updateBookState(id, "del");
+        response.success ?  toast.success("Book deleted!") : toast.error("Something went wrong...");
+        
         setTimeout(() => {
             setMode(null)
-        }, 1000);
+        }, 1200);
     }
+
+    const labelStyle = "italic font-semibold";
+    const inputStyle = "border border-black/80 p-2 rounded-bl-[12px] rounded-tr-[12px] focus:bg-gray-700/60 focus:text-white focus:p-3 transition-all";
+    const buttonLabel = isEditing ? "Finish" : "Add Book";
 
     return(
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-        bg-white p-1 w-5/6 lg:w-2/8 rounded-bl-[12px] rounded-tr-[12px]">
+                    bg-white p-1 w-5/6 lg:w-2/8 rounded-bl-[12px] rounded-tr-[12px] z-1">
         <form onSubmit={newBook}>
             <header className="flex flex-row gap-5 p-4">
                 <FontAwesomeIcon icon={faX} onClick={() => setMode(null)}/>
@@ -154,12 +161,9 @@ export default function NewBook(){
                         <label>{`${sliderValue} Stars`}</label>
                     </span>
             </section>
-            <section className="flex flex-col w-full items-center justify-center list-disc animate-pulse">
-                {formState.errors?.length > 0 ? formState.errors.map((error, i) => <li key={i}>{error}</li>) : null}
-                {formState.success && <label>{formState.success}</label>}
-            </section>
             <footer className="flex w-full mt-5 justify-center items-center">
-                <button className="border border-black bg-gray-800/70 text-white w-40 p-1 rounded-bl-[12px] rounded-tr-[12px] italic font-medium">Submit</button>
+                <button className={`border border-black bg-gray-800/70 text-white w-40 p-1 rounded-bl-[12px] 
+                                    rounded-tr-[12px] italic font-medium hover:animate-pulse`}>{buttonLabel}</button>
             </footer>
         </form>
          </div>

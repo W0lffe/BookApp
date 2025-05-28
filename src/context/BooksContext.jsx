@@ -2,6 +2,7 @@ import { createContext, useReducer, useRef, useState } from "react";
 import { fetchData, postData} from "../http";
 import { sort, filter} from "../components/Sort/sorting";
 import { getPageCount, getTitle } from "../components/util";
+import toast from "react-hot-toast";
 
 export const BookContext = createContext({
     mode: null,
@@ -70,8 +71,10 @@ export default function BookContextProvider({children}){
 
     const updateBookState = async (update, use) => {
 
-        let updatedBooks = [];
-        switch(use){
+        let updatedBooks;
+
+        try {
+            switch(use){
             case "edit": 
             updatedBooks = [...fullList.current].map((book) => 
                             book.id === update.id ? update : book);
@@ -83,15 +86,26 @@ export default function BookContextProvider({children}){
             updatedBooks = [...fullList.current].filter((book) => book.id !== update);
             break;
         }
-        bookState.isInitialized = false;
+            bookState.isInitialized = false;
+            
+            const response = await postAndFetch(updatedBooks);
+            return {success: response.success, error: response.error || ""}
 
-        await postAndFetch(updatedBooks);
+        } catch (error) {
+            console.error("Failed to update book state: " , error);
+            return {success: false,  error}
+        }
+      
     }
 
     const postAndFetch = async(data) => {
+        
+        const response = await postData(data);
+        if(response.success){
+            await fetchAndSetBooks();
+        }
 
-        await postData(data)
-        await fetchAndSetBooks();
+        return response;
     }
     
     const fetchAndSetBooks = async() => {
@@ -99,7 +113,13 @@ export default function BookContextProvider({children}){
 
         const fetch = async() => {
 
-            const books = await fetchData();
+            const response = await fetchData();
+            const books = response.books;
+
+            if(!response.success){
+                toast.error(response.error)
+            }
+          
             dispatch({
                 type: "SET_BOOKS",
                 payload: books
