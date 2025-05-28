@@ -82,8 +82,8 @@ export default function NewBook(){
 
             setSliderValue(stars)
 
-            toast((t) => (
-                <section className="flex flex-col w-full items-center justify-center list-disc animate-pulse">
+            toast.error((t) => (
+                <section className="flex flex-col w-full items-start justify-center list-none animate-pulse">
                     {errors?.length > 0 ? errors.map((error, i) => <li key={i}>{error}</li>) : null}
                 </section>
             ))
@@ -103,7 +103,8 @@ export default function NewBook(){
         const successMessage = isEditing ? "Book edited!" : "Book added!";
         const response = await updateBookState(book, isEditing ? "edit" : "add");
         
-        response.success ?  toast.success(successMessage) : toast.error("Something went wrong...");
+        response.success ?  toast.success(successMessage, {duration: 2000}) : 
+                            toast.error(`Something went wrong... ${response.error}`, {duration: 2000});
 
         setTimeout(() => {
             setMode(null);
@@ -112,7 +113,8 @@ export default function NewBook(){
 
     const handleDelete = async () => {
         const response = await updateBookState(id, "del");
-        response.success ?  toast.success("Book deleted!") : toast.error("Something went wrong...");
+        response.success ?  toast.success("Book deleted!", {duration: 2000}) : 
+                            toast.error(`Something went wrong... ${response.error}`, {duration: 2000});
         
         setTimeout(() => {
             setMode(null)

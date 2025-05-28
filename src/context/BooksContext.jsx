@@ -117,7 +117,7 @@ export default function BookContextProvider({children}){
             const books = response.books;
 
             if(!response.success){
-                toast.error(response.error)
+                toast.error(`Something went wrong... ${response.error}`, {duration: 2000})
             }
           
             dispatch({
